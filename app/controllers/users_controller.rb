@@ -4,6 +4,12 @@ class UsersController < ApplicationController
   # GET /users or /users.json
   def index
     @users = User.all
+    # render json: @users                    #display json format
+
+    # respond_to do |format|
+    #   format.json{render json: @users}
+    #   format.html{render :index}
+    # end
   end
 
   # GET /users/1 or /users/1.json
@@ -25,6 +31,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        ContactMailer.say_hello_to(@user).deliver_now
         format.html { redirect_to user_url(@user), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
